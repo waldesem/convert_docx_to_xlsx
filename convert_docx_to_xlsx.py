@@ -2,9 +2,9 @@
 import sys
 import os,os.path
 from pathlib import Path
-from tkinter import EXCEPTION
 from docx.api import Document
 import pandas as pd
+from pathlib import Path
 ###Входим в каталог для перебора папок
 input_dir = r'C:\Users\ubuntu\Documents\Кандидаты\\'
 ###Перебираем каталоги; ищем файлы с таблицами Word
@@ -38,16 +38,18 @@ for subdir, dirs, files in os.walk(input_dir):
                 df.loc[len(df)] = ["url", subdir]
                 df=df.T
                 df.to_excel(out_file, header = False, index = False)
-                df=df.T
             elif len(df.columns) == 3:
                 df.columns = ["Column1", "Column2", "Column3"]
                 df.loc[len(df)] = ["url", "url", subdir]
                 df=df.T
-                df.to_excel(out_file, columns=["Column1", "Column3"], header = False, index = False)
+                #df.drop(["Column2"]) Не удается выбросить вторую строку
+                df.to_excel(out_file, header = False, index = False)
+                #columns=["Column1", "Column3"] можно указать в скобках выше, но будут проблемы с транспонированием
             else:
                 continue
         else:
             continue
+        print(df)
 ##Собираем информацию из файлов в одну таблицу (количество и названия столбцов должны совпадать)
 path = Path(input_dir)
 df = pd.concat([pd.read_excel(f) for f in path.glob("*.xlsx")], ignore_index=True)
