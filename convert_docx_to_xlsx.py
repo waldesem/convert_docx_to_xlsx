@@ -14,7 +14,8 @@ for subdir, dirs, files in os.walk(input_dir):
         if file.endswith(".docx"):
             in_file = os.path.join(subdir, file)
             output_file = file.split('.')[0]
-            out_file = r'C:\Users\ubuntu\Documents\Кандидаты\\'+output_file+'.xlsx'
+            out_file = input_dir+output_file+'.xlsx'
+            #out_file = r'C:\Users\ubuntu\Documents\Кандидаты\\'+output_file+'.xlsx'
             #Читаем документ, обрабатываем исключения файлов docx, которые созданы пустыми
             try:
                 document = Document(in_file)
@@ -55,5 +56,6 @@ for subdir, dirs, files in os.walk(input_dir):
 #Собираем информацию из файлов в одну таблицу
 path = Path(input_dir)
 df = pd.concat([pd.read_excel(f) for f in path.glob("*.xlsx")], ignore_index=True)
-df.to_excel(r'C:\Users\ubuntu\Documents\Кандидаты\Таблица.xlsx', header = False, index = False)
+#df.to_excel(r'C:\Users\ubuntu\Documents\Кандидаты\Таблица.xlsx', header = False, index = False)
+df.to_excel(input_dir+'Таблица.xlsx', header = False, index = False)
 print(df)
